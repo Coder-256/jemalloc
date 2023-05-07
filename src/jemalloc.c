@@ -4151,6 +4151,16 @@ label_done:
 	return filled;
 }
 
+JEMALLOC_EXPORT void je_sbrk_hook(
+    void *(*hook)(intptr_t increment)) {
+	LOG("core.sbrk_hook.entry", "hook: %p", hook);
+
+	cur_sbrk_hook = hook;
+	extent_dss_boot();
+
+	LOG("core.sbrk_hook.exit", "");
+}
+
 /*
  * End non-standard functions.
  */

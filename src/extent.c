@@ -1318,9 +1318,5 @@ bool
 extent_boot(void) {
 	assert(sizeof(slab_data_t) >= sizeof(e_prof_info_t));
 
-	if (have_dss) {
-		extent_dss_boot();
-	}
-
 	return false;
 }

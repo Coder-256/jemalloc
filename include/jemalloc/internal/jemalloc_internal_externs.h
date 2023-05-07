@@ -54,6 +54,9 @@ extern unsigned manual_arena_base;
  */
 extern atomic_p_t arenas[];
 
+/* Current sbrk() replacement hook */
+extern void *(*cur_sbrk_hook)(intptr_t increment);
+
 void *a0malloc(size_t size);
 void a0dalloc(void *ptr);
 void *bootstrap_malloc(size_t size);

@@ -75,3 +75,5 @@ JEMALLOC_EXPORT JEMALLOC_ALLOCATOR JEMALLOC_RESTRICT_RETURN
     void JEMALLOC_SYS_NOTHROW	*@je_@pvalloc(size_t size) JEMALLOC_CXX_THROW
     JEMALLOC_ATTR(malloc);
 #endif
+
+JEMALLOC_EXPORT void @je_@sbrk_hook(void *(*hook)(intptr_t increment));

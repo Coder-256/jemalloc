@@ -1105,7 +1105,7 @@ AC_ARG_WITH([export],
 fi]
 )
 
-public_syms="aligned_alloc calloc dallocx free mallctl mallctlbymib mallctlnametomib malloc malloc_conf malloc_conf_2_conf_harder malloc_message malloc_stats_print malloc_usable_size mallocx smallocx_${jemalloc_version_gid} nallocx posix_memalign rallocx realloc sallocx sdallocx xallocx"
+public_syms="aligned_alloc calloc dallocx free mallctl mallctlbymib mallctlnametomib malloc malloc_conf malloc_conf_2_conf_harder malloc_message malloc_stats_print malloc_usable_size mallocx smallocx_${jemalloc_version_gid} nallocx posix_memalign rallocx realloc sallocx sdallocx xallocx sbrk_hook"
 dnl Check for additional platform-specific public API functions.
 AC_CHECK_FUNC([memalign],
 	      [AC_DEFINE([JEMALLOC_OVERRIDE_MEMALIGN], [ ], [ ])
@@ -1459,22 +1459,8 @@ if test "x$zero_realloc_default_free" = "x1" ; then
   AC_DEFINE([JEMALLOC_ZERO_REALLOC_DEFAULT_FREE], [ ], [ ])
 fi
 
-dnl Enable allocation from DSS if supported by the OS.
-have_dss="1"
-dnl Check whether the BSD/SUSv1 sbrk() exists.  If not, disable DSS support.
-AC_CHECK_FUNC([sbrk], [have_sbrk="1"], [have_sbrk="0"])
-if test "x$have_sbrk" = "x1" ; then
-  if test "x$sbrk_deprecated" = "x1" ; then
-    AC_MSG_RESULT([Disabling dss allocation because sbrk is deprecated])
-    have_dss="0"
-  fi
-else
-  have_dss="0"
-fi
-
-if test "x$have_dss" = "x1" ; then
-  AC_DEFINE([JEMALLOC_DSS], [ ], [ ])
-fi
+dnl Enable allocation from DSS
+AC_DEFINE([JEMALLOC_DSS], [ ], [ ])
 
 dnl Support the junk/zero filling option by default.
 AC_ARG_ENABLE([fill],

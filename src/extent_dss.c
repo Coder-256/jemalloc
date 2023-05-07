@@ -17,6 +17,8 @@ const char	*dss_prec_names[] = {
 	"N/A"
 };
 
+void *(*cur_sbrk_hook)(intptr_t increment) = NULL;
+
 /*
  * Current dss precedence default, used when creating new arenas.  NB: This is
  * stored as unsigned rather than dss_prec_t because in principle there's no
@@ -40,7 +42,8 @@ static atomic_p_t	dss_max;
 static void *
 extent_dss_sbrk(intptr_t increment) {
 #ifdef JEMALLOC_DSS
-	return sbrk(increment);
+	assert(cur_sbrk_hook != NULL);
+	return (*cur_sbrk_hook)(increment);
 #else
 	not_implemented();
 	return NULL;
